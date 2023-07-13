@@ -1,6 +1,6 @@
 
   // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+  
   
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
@@ -22,7 +22,7 @@
   var nameInput = document.getElementById("name");
   var emailInput = document.getElementById("email");
   var passwordInput = document.getElementById("password");
-  
+  var errorContainer = document.getElementById("errorContainer");
   // Register user with email and password
   function register(event) {
     event.preventDefault(); // Prevent the form from submitting
