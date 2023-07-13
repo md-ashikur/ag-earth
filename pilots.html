@@ -2868,14 +2868,7 @@
                         >
                       </li>
                       <li>
-                        <a
-                          class="font-medium text-sm text-secondary hoverText flex items-center py-1 px-3"
-                          href="signin.html"
-                          @click="open = false"
-                          @focus="open = true"
-                          @focusout="open = false"
-                          >Sign Out</a
-                        >
+                        <button id="signOutButton">Sign Out</button>
                       </li>
                     </ul>
                   </div>
@@ -2895,7 +2888,10 @@
         </main>
       </div>
     </div>
-
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
     <script src="./js/vendors/alpinejs.min.js" defer></script>
+    <script src="signout.js" type="module"></script>
+
   </body>
 </html>
