@@ -2,11 +2,92 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Mosaic HTML Demo - Page Not Found</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link href="./css/vendors/flatpickr.min.css" rel="stylesheet" />
-    <link href="./style.css" rel="stylesheet" />
+    <title>Mosaic HTML Demo - Inbox</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="./css/vendors/flatpickr.min.css" rel="stylesheet">
+    <link href="./style.css" rel="stylesheet">
     <style>
+      /* Your custom CSS styles */
+
+      /*Addtional Style */
+      #sidenav {
+        max-height: 100vh;
+        height: 100vh;
+        max-width: 255px;
+        min-width: 250px;
+        overflow-x: hidden;
+        overflow-y: auto;
+
+        transition: all 0.3s ease-in-out;
+        transform: translate(-150%, 0px);
+        -webkit-transform: translate(-150%, 0px);
+        /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+        -ms-transform: translate(-150%, 0px);
+      }
+
+      #sidenav.active {
+        transition: all 0.3s ease-in-out;
+        transform: translate(0%, 0px);
+        -webkit-transform: translate(0%, 0px);
+        -ms-transform: translate(0%, 0px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
+      }
+
+      #overlay {
+        width: 100vw;
+        height: 100vh;
+        display: none;
+        background-color: rgba(0, 0, 0, 0.466);
+        animation: fade 5s;
+        -webkit-animation: fade 500ms;
+        -moz-animation: fade 500ms;
+        -o-animation: fade 500ms;
+      }
+
+      #overlay.active {
+        display: block;
+      }
+
+      @keyframes fade {
+        0% {
+          opacity: 0;
+        }
+
+        100% {
+          opacity: 1;
+        }
+      }
+
+      @-moz-keyframes fade {
+        0% {
+          opacity: 0;
+        }
+
+        100% {
+          opacity: 1;
+        }
+      }
+
+      @-webkit-keyframes fade {
+        0% {
+          opacity: 0;
+        }
+
+        100% {
+          opacity: 1;
+        }
+      }
+
+      @-o-keyframes fade {
+        0% {
+          opacity: 0;
+        }
+
+        100% {
+          opacity: 1;
+        }
+      }
+
       /* help side bar  */
 
       .helpList li :hover {
@@ -17,7 +98,7 @@
         max-height: 100vh;
         height: 100vh;
         max-width: 70vw;
-        min-width: 255px;
+        min-width: 250px;
         overflow-x: hidden;
         overflow-y: auto;
 
@@ -41,7 +122,6 @@
         height: 100vh;
         display: none;
         background-color: rgba(0, 0, 0, 0.466);
-
         animation: fade 5s;
         -webkit-animation: fade 500ms;
         -moz-animation: fade 500ms;
@@ -91,16 +171,42 @@
           opacity: 1;
         }
       }
+
+      .map-nav-btn{
+        background-color: #94959733;
+       
+      }
+      .map-nav-btn:hover{
+        background-color: #9495974f;
+       
+      }
     </style>
   </head>
 
   <body
-    class="font-inter antialiased bg-slate-100 text-tin"
-    :class="{ 'sidebar-expanded': sidebarExpanded }"
-    x-data="{ sidebarOpen: false, sidebarExpanded: localStorage.getItem('sidebar-expanded') == 'true' }"
-    x-init="$watch('sidebarExpanded', value => localStorage.setItem('sidebar-expanded', value))"
+    
+    
   >
     <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        let burger = document.querySelector(".burger");
+        let close = document.querySelector(".close");
+        let sidenav = document.querySelector("#sidenav");
+        let overlay = document.querySelector("#overlay");
+
+        let classOpen = [sidenav, overlay];
+        burger.addEventListener("click", function (e) {
+          classOpen.forEach((el) => el.classList.add("active"));
+        });
+
+        let classCloseClick = [overlay, close];
+        classCloseClick.forEach(function (el) {
+          el.addEventListener("click", function (els) {
+            classOpen.forEach((el) => el.classList.remove("active"));
+          });
+        });
+      });
+
       //   help side bar
       document.addEventListener("DOMContentLoaded", function () {
         let help_burger = document.querySelector(".helpButton");
@@ -121,17 +227,103 @@
         });
       });
 
-      // main sidebar
       if (localStorage.getItem("sidebar-expanded") == "true") {
         document.querySelector("body").classList.add("sidebar-expanded");
       } else {
         document.querySelector("body").classList.remove("sidebar-expanded");
       }
     </script>
+
+    <header class="px-4 py-2 m-0 flex fixed items-center gap-2">
+      <button
+        class="burger map-nav-btn rounded-lg px-3 py-2 text-slate-500 hover:text-slate-600"
+      >
+        <span class="sr-only"></span>
+        <svg
+          class="w-6 h-6 fill-current"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <rect x="4" y="5" width="16" height="2" />
+          <rect x="4" y="11" width="16" height="2" />
+          <rect x="4" y="17" width="16" height="2" />
+        </svg>
+      </button>
+
+      <button
+        class="flex items-center map-nav-btn rounded-lg gap-1 px-3 py-1"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="icon icon-tabler icon-tabler-device-floppy"
+          width="30"
+          height="30"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="#9e9e9e"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path
+            d="M6 4h10l4 4v10a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2"
+          />
+          <circle cx="12" cy="14" r="2" />
+          <polyline points="14 4 14 8 8 8 8 4" />
+        </svg>
+      </button>
+
+      <button
+        class="flex items-center map-nav-btn rounded-lg gap-1 px-3 py-1"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="icon icon-tabler icon-tabler-rotate-2"
+          width="30"
+          height="30"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="#9e9e9e"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M15 4.55a8 8 0 0 0 -6 14.9m0 -4.45v5h-5" />
+          <line x1="18.37" y1="7.16" x2="18.37" y2="7.17" />
+          <line x1="13" y1="19.94" x2="13" y2="19.95" />
+          <line x1="16.84" y1="18.37" x2="16.84" y2="18.38" />
+          <line x1="19.37" y1="15.1" x2="19.37" y2="15.11" />
+          <line x1="19.94" y1="11" x2="19.94" y2="11.01" />
+        </svg>
+      </button>
+
+      <button
+        class="flex items-center map-nav-btn rounded-lg gap-1 px-3 py-1"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="icon icon-tabler icon-tabler-rotate-clockwise"
+          width="30"
+          height="30"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="#9e9e9e"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M4.05 11a8 8 0 1 1 .5 4m-.5 5v-5h5" />
+        </svg>
+      </button>
+    </header>
+
     <!-- help side bar  -->
     <div
       id="helpOverlay"
-      class="fixed z-50 top-0 left-0 bg-black bg-opacity-50"
+      class="fixed z-40 top-0 left-0"
     ></div>
     <div
       id="helpSidenav"
@@ -157,6 +349,7 @@
           </svg>
         </div>
       </div>
+      <hr class="opacity-30 my-3" />
 
       <div class="sd-body no-scrollbar">
         <div class="flex justify-center">
@@ -168,128 +361,136 @@
         </div>
         <ul class="text-tin-300 helpList p-2">
           <li class="mb-1 last:mb-0">
-            <a end href="/">
+            <NavLink end to="/">
               <span
                 class="text-sm font-medium lg:opacity-100 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
               >
                 AgEarth Academy
               </span>
-            </a>
+            </NavLink>
           </li>
           <li class="mb-1 last:mb-0">
-            <a end href="help-what-does-data-mean.html">
+            <NavLink end to="/help/what-my-data-mean">
               <span
                 class="text-sm font-medium lg:opacity-100 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
               >
                 What Does My Data Mean?
               </span>
-            </a>
+            </NavLink>
           </li>
           <li class="mb-1 last:mb-0">
-            <a end href="help-exporting.html">
+            <NavLink end to="/help/exporting">
               <span
                 class="text-sm font-medium lg:opacity-100 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
               >
                 Exporting
               </span>
-            </a>
+            </NavLink>
           </li>
           <li class="mb-1 last:mb-0">
-            <a end href="help-annotating.html">
+            <NavLink end to="/help/annotating">
               <span
                 class="text-sm font-medium lg:opacity-100 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
               >
                 Annotating
               </span>
-            </a>
+            </NavLink>
           </li>
           <li class="mb-1 last:mb-0">
-            <a end href="help-sharing.html">
+            <NavLink end to="/help/sharing">
               <span
                 class="text-sm font-medium lg:opacity-100 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
               >
                 Sharing
               </span>
-            </a>
+            </NavLink>
           </li>
           <li class="mb-1 last:mb-0">
-            <a end href="help-volume-measurements.html">
+            <NavLink end to="/help/volume-measurements">
               <span
                 class="text-sm font-medium lg:opacity-100 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
               >
                 Volume Measurements
               </span>
-            </a>
+            </NavLink>
           </li>
           <li class="mb-1 last:mb-0">
-            <a end href="help-cropping-map.html">
+            <NavLink end to="/help/cropping-map">
               <span
                 class="text-sm font-medium lg:opacity-100 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
               >
                 Cropping your map
               </span>
-            </a>
+            </NavLink>
           </li>
           <li class="mb-1 last:mb-0">
-            <a end href="help-apps-for-industry.html">
+            <NavLink end to="/help/app-industry">
               <span
                 class="text-sm font-medium lg:opacity-100 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
               >
                 Apps for your industry
               </span>
-            </a>
+            </NavLink>
           </li>
           <li class="mb-1 last:mb-0">
-            <a end href="help-planet-health-toolbox.html">
+            <NavLink end to="/help/plant-health-toolbox">
               <span
                 class="text-sm font-medium lg:opacity-100 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
               >
                 Plant Health Toolbox
               </span>
-            </a>
+            </NavLink>
           </li>
           <li class="mb-1 last:mb-0">
-            <a end href="help-ndvi.html">
+            <NavLink end to="/help/understanding-ndvi">
               <span
                 class="text-sm font-medium lg:opacity-100 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
               >
                 Understanding NDVI
               </span>
-            </a>
+            </NavLink>
           </li>
           <li class="mb-1 last:mb-0">
-            <a end href="help-elevation.html">
+            <NavLink end to="/help/elevation-toolbox">
               <span
                 class="text-sm font-medium lg:opacity-100 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
               >
                 Elevation Toolbox
               </span>
-            </a>
+            </NavLink>
           </li>
           <li class="mb-1 last:mb-0">
-            <a end href="help-3d-point-cloud.html">
+            <NavLink end to="/help/3d-point-cloud">
               <span
                 class="text-sm font-medium lg:opacity-100 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
               >
                 3D Point Cloud
               </span>
-            </a>
+            </NavLink>
           </li>
           <li class="mb-1 last:mb-0">
-            <a end href="help-support.html">
+            <NavLink end to="/help/support-Page">
               <span
                 class="text-sm font-medium lg:opacity-100 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
               >
                 AgEarth Support Page
               </span>
-            </a>
+            </NavLink>
           </li>
         </ul>
       </div>
     </div>
-    <!-- Page wrapper -->
-    <div class="flex h-screen overflow-hidden">
-      <!-- Sidebar -->
+
+    <!-- main sidebar  -->
+    <div
+      id="overlay"
+      class="fixed z-30 top-0 left-0 bg-black bg-opacity-50"
+    ></div>
+
+    <div
+      id="sidenav"
+      class="fixed z-30 top-0 left-0 bg-primary-600 p-2 no-scrollbar"
+    >
       <div>
         <!-- Sidebar backdrop (mobile only) -->
         <div
@@ -303,10 +504,7 @@
         <div
           id="sidebar"
           class="flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-screen overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 lg:w-20 lg:sidebar-expanded:!w-64 2xl:!w-64 shrink-0 bg-primary-600 p-4 transition-all duration-200 ease-in-out"
-          :class="sidebarOpen ? 'translate-x-100' : '-translate-x-64'"
-          @click.outside="sidebarOpen = false"
-          @keydown.escape.window="sidebarOpen = false"
-          x-cloak="lg"
+          
         >
           <!-- Sidebar header -->
           <div class="flex justify-between items-center pr-3 sm:px-2">
@@ -351,29 +549,8 @@
               </svg>
             </a>
 
-            <!-- Close button -->
-            <button
-              class="lg:hidden text-slate-500 hover:text-tin-300"
-              @click.stop="sidebarOpen = !sidebarOpen"
-              aria-controls="sidebar"
-              :aria-expanded="sidebarOpen"
-            >
-              <span class="sr-only">Close sidebar</span>
-              <svg
-                class="w-6 h-6 fill-current"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M10.7 18.7l1.4-1.4L7.8 13H20v-2H7.8l4.3-4.3-1.4-1.4L4 12z"
-                />
-              </svg>
-            </button>
-
             <!-- Expand / collapse button -->
-            <div
-              class="pt-3 hidden lg:inline-flex 2xl:hidden justify-end -ml-1 mt-auto"
-            >
+            <div class="close pt-3 lg:inline-flex justify-end -ml-1 mt-auto">
               <div class="px-3 py-2">
                 <button @click="sidebarExpanded = !sidebarExpanded">
                   <span class="sr-only">Expand / collapse sidebar</span>
@@ -394,10 +571,10 @@
 
           <!-- sidebar trail ==============  -->
           <div
-            class="bg-secondary lg:hidden block text-center lg:sidebar-expanded:block text-white py-2 rounded-lg mt-4 text-xs"
+            class="bg-secondary lg:hidden block lg:sidebar-expanded:block text-white p-2 rounded-lg mt-4 text-xs"
           >
             Trial expires in 4 days.
-            <a href="/" class="underline font-bold"> Upgrade now.</a>
+            <a href="/" class="underline font-bold"> Upgrade now. </a>
           </div>
 
           <!-- Links -->
@@ -436,7 +613,11 @@
               </div>
 
               <ul class="mt-3">
-                
+               
+
+              
+
+              
                 <!-- Projects -->
                 <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0">
                   <a
@@ -475,11 +656,12 @@
                   </a>
                 </li>
 
+                
                 <!-- Help -->
                 <li
                   class="helpButton cursor-pointer px-3 py-2 rounded-sm mb-0.5 last:mb-0"
                 >
-                  <div class="flex text-white items-center">
+                  <div class="flex items-center">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       class="shrink-0 icon icon-tabler icon-tabler-zoom-question"
@@ -513,12 +695,14 @@
                       />
                     </svg>
                     <span
-                      class="text-sm font-medium ml-3 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
+                      class="text-sm font-medium ml-3 text-white lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200"
                       >Help</span
                     >
                   </div>
                 </li>
 
+               
+                
                 <!-- Settings -->
                 <li
                   class="px-3 py-2 rounded-sm mb-0.5 last:mb-0"
@@ -642,11 +826,12 @@
                     </ul>
                   </div>
                 </li>
+              
               </ul>
             </div>
             <!-- More group -->
             <div>
-             
+              
               <ul class="">
                 <!-- Authentication -->
                 <li
@@ -731,51 +916,34 @@
                     </ul>
                   </div>
                 </li>
-
-                <!-- user name -->
-                <li class="px-3 py-2 mt-8 text-white rounded-sm mb-0.5 last:mb-0">
-                  <a href="settings.html">
-                   Acme Inc.
-                  </a>
-                 </li>
+                
+                   <!-- user name -->
+                   <li class="px-3 py-2 mt-8 text-white rounded-sm mb-0.5 last:mb-0">
+                    <a href="settings.html">
+                     Acme Inc.
+                    </a>
+                   </li>
               </ul>
             </div>
           </div>
         </div>
       </div>
-      <!-- Content area -->
-      <div
-        class="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden bg-white"
-      >
-      
-        <main>
-          <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-            <div class="max-w-2xl m-auto mt-16">
-              <div class="text-center px-4">
-                <div class="inline-flex mb-8">
-                  <img
-                    src="./images/404-illustration.svg"
-                    width="176"
-                    height="176"
-                    alt="404 illustration"
-                  />
-                </div>
-                <div class="mb-6">
-                  Hmm...this page doesn’t exist. Try searching for something
-                  else!
-                </div>
-                <a
-                  href="index.html"
-                  class="btn bg-secondary hoverBtn text-white"
-                  >Back To Dashboard</a
-                >
-              </div>
-            </div>
-          </div>
-        </main>
-      </div>
     </div>
+
+    <main class="overflow-x-hidden">
+      <div class="h-screen w-screen">
+        <!-- {/* your editor code gose here=========== */} -->
+        <a href="https://www.google.com/">
+          <img src="./images/editor.jpg" alt="" class="h-auto w-full"
+        /></a>
+      </div>
+    </main>
 
     <script src="./js/vendors/alpinejs.min.js" defer></script>
   </body>
 </html>
+
+
+
+
+

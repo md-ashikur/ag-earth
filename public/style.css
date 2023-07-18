@@ -75,6 +75,13 @@ body {
 
 
 /* custom colors start=============== */
+.new-folder-btn{
+  border: 1px solid #33333328 !important;
+}
+.new-folder-btn:hover{
+  border: 1px solid #33333328 !important;
+  background-color: #e3e6e7;
+}
 .hoverBtn{
   background-color: rgb(75 132 0 / var(--tw-bg-opacity)) !important;
 }
