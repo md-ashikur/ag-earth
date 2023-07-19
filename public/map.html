@@ -835,6 +835,7 @@
               <ul class="">
                 <!-- Authentication -->
                 <li
+                id="signupButton"
                   class="px-3 py-2 rounded-sm mb-0.5 last:mb-0"
                   x-data="{ open: false }"
                 >
@@ -918,9 +919,15 @@
                 </li>
                 
                    <!-- user name -->
-                   <li class="px-3 py-2 mt-8 text-white rounded-sm mb-0.5 last:mb-0">
+                   <li id="signOutButton" class="px-3 cursor-pointer py-2 mt-8 text-white lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 rounded-sm mb-0.5 last:mb-0">                
+                    Log out             
+                   </li>
+                   <li class="px-3 py-2 mt-8 text-white lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 rounded-sm mb-0.5 last:mb-0">
                     <a href="settings.html">
-                     Acme Inc.
+                     <div id="userDisplay" style="display: none;">
+                       <p><span id="userName"></span></p>
+                     
+                     </div>
                     </a>
                    </li>
               </ul>
@@ -940,6 +947,70 @@
     </main>
 
     <script src="./js/vendors/alpinejs.min.js" defer></script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
+    <script type="module">
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyCiYtCABDL7g66NB4mdTH2OS1wOQ99AqkY",
+          authDomain: "agearth-testing.firebaseapp.com",
+          projectId: "agearth-testing",
+          storageBucket: "agearth-testing.appspot.com",
+          messagingSenderId: "1014396222091",
+          appId: "1:1014396222091:web:72356ee8f8cd5c4625728e"
+        };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      
+        function checkAuthState() {
+          firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+              console.log(user)
+      
+               // User is signed in
+               document.getElementById("userName").textContent = user.displayName;
+                document.getElementById("userDisplay").style.display = "block";
+                
+      
+              // User is signed in
+              // Show the login button
+             
+              document.getElementById("signOutButton").style.display = "block";
+              document.getElementById("signupButton").style.display = "none";
+            } else {
+              // User is not signed in
+              // Show the signup button
+              document.getElementById("signupButton").style.display = "block";
+              document.getElementById("signOutButton").style.display = "none";
+            }
+          });
+        }
+      
+        window.onload = function() {
+          checkAuthState();
+        };
+      
+      
+        // Sign out user
+      function signOut() {
+          firebase.auth().signOut()
+            .then(function() {
+              console.log("User signed out successfully");
+              // Redirect the user to the sign-in page or any other desired page
+              window.location.href = "signin.html";
+            })
+            .catch(function(error) {
+              console.error("Error signing out:", error);
+              // Handle any errors that occur during sign out
+            });
+        }
+        
+        // Attach the signOut function to the sign out button or link
+        var signOutButton = document.getElementById("signOutButton");
+        signOutButton.addEventListener("click", signOut);
+      </script>
   </body>
 </html>
 

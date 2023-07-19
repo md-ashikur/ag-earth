@@ -54,3 +54,16 @@
   
   // Attach the register function to the form submission event
   registerForm.addEventListener("submit", register);
+
+
+
+
+
+  
+
+
+
+
+
+
+
