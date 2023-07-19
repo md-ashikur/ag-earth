@@ -27,7 +27,7 @@ function login(event) {
     .then(function(userCredential) {
       console.log("User logged in successfully:", userCredential.user);
       // Redirect the user to another page after successful login
-      window.location.href = "dashboard.html";
+      window.location.href = "index.html";
     })
     .catch(function(error) {
       console.error("Error logging in:", error);
