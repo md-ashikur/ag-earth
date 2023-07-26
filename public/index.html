@@ -989,7 +989,7 @@
               </div>
 
               <!-- {/* all projects */} -->
-              <div class="mt-8" id="crud-operations" style="display: none">
+              <div class="mt-8" >
                 <div class="flex items-center gap-2">
                   <h2 class="text-xl text-slate-800 font-bold mb-5 mr-5">
                     All Projects
@@ -1252,7 +1252,7 @@
                 </div>
 
                 <!-- project view tab  -->
-                <div class="relative">
+                <div class="relative" id="crud-operations" style="display: none">
                   <!-- tabs -->
 
                   <div class="flex absolute">
@@ -1505,6 +1505,7 @@
           // No user is signed in.
 
           document.getElementById("crud-operations").style.display = "none";
+          window.location.href = "signin.html";
         }
       });
 
@@ -1603,7 +1604,7 @@
               const docId = doc.id;
               const timestamp = doc.data().timestamp;
               const formattedDate = getCurrentDate(timestamp);
-              const dataListItem = document.createElement("li");
+              const dataListItem = document.createElement("div");
               dataListItem.innerHTML = `
             <div class="relative items-center my-2">
                                 <a

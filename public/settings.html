@@ -919,7 +919,13 @@ class="fixed z-50 top-0 left-0 bg-primary-600 p-2 no-scrollbar"
                                         <div class="sm:flex sm:items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-5">
                                             <div class="sm:w-1/3">
                                                 <label class="block text-sm font-medium mb-1" for="name">Business Name</label>
-                                                <input id="name" class="form-input w-full" type="text" value="Acme Inc." />
+                                                
+                                                <div id="accName" style="display: none;" class="border p-2 rounded-md">
+                                                  <p><span id="AccUserName"></span></p>
+                                                
+                                                </div>
+                                                
+                                                
                                             </div>
                                             <div class="sm:w-1/3">
                                                 <label class="block text-sm font-medium mb-1" for="business-id">Business ID</label>
@@ -939,7 +945,10 @@ class="fixed z-50 top-0 left-0 bg-primary-600 p-2 no-scrollbar"
                                         <div class="flex flex-wrap mt-5">
                                             <div class="mr-2">
                                                 <label class="sr-only" for="email">Business email</label>
-                                                <input id="email" class="form-input" type="email" value="admin@acmeinc.com" />
+                                                <div id="accEmail" style="display: none;" class="border p-2 rounded-md">
+                                                  <p><span id="AccUserEmail"></span></p>
+                                                
+                                                </div>
                                             </div>
                                             <button class="btn border-slate-200 hover:border-slate-300 shadow-sm text-secondary">Change</button>
                                         </div>
@@ -950,7 +959,7 @@ class="fixed z-50 top-0 left-0 bg-primary-600 p-2 no-scrollbar"
                                         <h3 class="text-xl leading-snug text-slate-800 font-bold mb-1">Password</h3>
                                         <div class="text-sm">You can set a permanent password if you don't want to use temporary login codes.</div>
                                         <div class="mt-5">
-                                            <button class="btn border-slate-200 shadow-sm text-secondary">Set New Password</button>
+                                            <a href="reset-password.html"><button class="btn border-slate-200 shadow-sm text-secondary">Set New Password</button></a>
                                         </div>
                                     </section>
 
@@ -1020,20 +1029,22 @@ class="fixed z-50 top-0 left-0 bg-primary-600 p-2 no-scrollbar"
                // User is signed in
                document.getElementById("userName").textContent = user.displayName;
                 document.getElementById("userDisplay").style.display = "block";
-                
-      
-              // User is signed in
-              // Show the login button
-             
-              document.getElementById("signOutButton").style.display = "block";
-              document.getElementById("signupButton").style.display = "none";
+              
+                document.getElementById("AccUserName").textContent = user.displayName;
+                document.getElementById("accName").style.display = "block";
+               
+                document.getElementById("AccUserEmail").textContent = user.email;
+                document.getElementById("accEmail").style.display = "block";
+                     
+                document.getElementById("signOutButton").style.display = "block";
+                document.getElementById("signupButton").style.display = "none";
             } else {
               // User is not signed in
               // Show the signup button
               document.getElementById("signupButton").style.display = "block";
               document.getElementById("signOutButton").style.display = "none";
               // Redirect to login page
-          window.location.href = "signin.html";
+              window.location.href = "signin.html";
             }
              // Show the page content after authentication check
         document.getElementById("pageContent").style.display = "block";
