@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <title>Mosaic HTML Demo - Inbox</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link href="./css/vendors/flatpickr.min.css" rel="stylesheet">
-    <link href="./style.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link href="./css/vendors/flatpickr.min.css" rel="stylesheet" />
+    <link href="./style.css" rel="stylesheet" />
     <style>
       /* Your custom CSS styles */
 
@@ -172,21 +172,16 @@
         }
       }
 
-      .map-nav-btn{
+      .map-nav-btn {
         background-color: #94959733;
-       
       }
-      .map-nav-btn:hover{
+      .map-nav-btn:hover {
         background-color: #9495974f;
-       
       }
     </style>
   </head>
 
-  <body
-    
-    
-  >
+  <body>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         let burger = document.querySelector(".burger");
@@ -250,9 +245,7 @@
         </svg>
       </button>
 
-      <button
-        class="flex items-center map-nav-btn rounded-lg gap-1 px-3 py-1"
-      >
+      <button class="flex items-center map-nav-btn rounded-lg gap-1 px-3 py-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="icon icon-tabler icon-tabler-device-floppy"
@@ -274,9 +267,7 @@
         </svg>
       </button>
 
-      <button
-        class="flex items-center map-nav-btn rounded-lg gap-1 px-3 py-1"
-      >
+      <button class="flex items-center map-nav-btn rounded-lg gap-1 px-3 py-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="icon icon-tabler icon-tabler-rotate-2"
@@ -299,9 +290,7 @@
         </svg>
       </button>
 
-      <button
-        class="flex items-center map-nav-btn rounded-lg gap-1 px-3 py-1"
-      >
+      <button class="flex items-center map-nav-btn rounded-lg gap-1 px-3 py-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           class="icon icon-tabler icon-tabler-rotate-clockwise"
@@ -321,10 +310,7 @@
     </header>
 
     <!-- help side bar  -->
-    <div
-      id="helpOverlay"
-      class="fixed z-40 top-0 left-0"
-    ></div>
+    <div id="helpOverlay" class="fixed z-40 top-0 left-0"></div>
     <div
       id="helpSidenav"
       class="fixed z-50 top-0 left-0 bg-primary-600 p-2 no-scrollbar"
@@ -504,7 +490,6 @@
         <div
           id="sidebar"
           class="flex flex-col absolute z-40 left-0 top-0 lg:static lg:left-auto lg:top-auto lg:translate-x-0 h-screen overflow-y-scroll lg:overflow-y-auto no-scrollbar w-64 lg:w-20 lg:sidebar-expanded:!w-64 2xl:!w-64 shrink-0 bg-primary-600 p-4 transition-all duration-200 ease-in-out"
-          
         >
           <!-- Sidebar header -->
           <div class="flex justify-between items-center pr-3 sm:px-2">
@@ -613,11 +598,6 @@
               </div>
 
               <ul class="mt-3">
-               
-
-              
-
-              
                 <!-- Projects -->
                 <li class="px-3 py-2 rounded-sm mb-0.5 last:mb-0">
                   <a
@@ -656,7 +636,6 @@
                   </a>
                 </li>
 
-                
                 <!-- Help -->
                 <li
                   class="helpButton cursor-pointer px-3 py-2 rounded-sm mb-0.5 last:mb-0"
@@ -701,11 +680,9 @@
                   </div>
                 </li>
 
-               
-                
                 <!-- Settings -->
                 <li
-                id="settings"
+                  id="settings"
                   class="px-3 py-2 rounded-sm mb-0.5 last:mb-0"
                   x-data="{ open: false }"
                 >
@@ -827,16 +804,14 @@
                     </ul>
                   </div>
                 </li>
-              
               </ul>
             </div>
             <!-- More group -->
             <div>
-              
               <ul class="">
                 <!-- Authentication -->
                 <li
-                id="signupButton"
+                  id="signupButton"
                   class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 hidden"
                   x-data="{ open: false }"
                 >
@@ -918,19 +893,23 @@
                     </ul>
                   </div>
                 </li>
-                
-                   <!-- user name -->
-                   <li id="signOutButton" class="px-3 cursor-pointer py-2 mt-8 text-white lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 rounded-sm mb-0.5 last:mb-0">                
-                    Log out             
-                   </li>
-                   <li class="px-3 py-2 mt-8 text-white lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 rounded-sm mb-0.5 last:mb-0">
-                    <a href="settings.html">
-                     <div id="userDisplay" style="display: none;">
-                       <p><span id="userName"></span></p>
-                     
-                     </div>
-                    </a>
-                   </li>
+
+                <!-- user name -->
+                <li
+                  id="signOutButton"
+                  class="px-3 cursor-pointer py-2 mt-8 text-white lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 rounded-sm mb-0.5 last:mb-0"
+                >
+                  Log out
+                </li>
+                <li
+                  class="px-3 py-2 mt-8 text-white lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200 rounded-sm mb-0.5 last:mb-0"
+                >
+                  <a href="settings.html">
+                    <div id="userDisplay" style="display: none">
+                      <p><span id="userName"></span></p>
+                    </div>
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -949,76 +928,65 @@
 
     <script src="./js/vendors/alpinejs.min.js" defer></script>
 
-
     <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-auth.js"></script>
     <script type="module">
-
-        const firebaseConfig = {
-          apiKey: "AIzaSyCiYtCABDL7g66NB4mdTH2OS1wOQ99AqkY",
-          authDomain: "agearth-testing.firebaseapp.com",
-          projectId: "agearth-testing",
-          storageBucket: "agearth-testing.appspot.com",
-          messagingSenderId: "1014396222091",
-          appId: "1:1014396222091:web:72356ee8f8cd5c4625728e"
-        };
+      const firebaseConfig = {
+        apiKey: "AIzaSyCiYtCABDL7g66NB4mdTH2OS1wOQ99AqkY",
+        authDomain: "agearth-testing.firebaseapp.com",
+        projectId: "agearth-testing",
+        storageBucket: "agearth-testing.appspot.com",
+        messagingSenderId: "1014396222091",
+        appId: "1:1014396222091:web:72356ee8f8cd5c4625728e",
+      };
       // Initialize Firebase
       firebase.initializeApp(firebaseConfig);
-      
-        function checkAuthState() {
-          firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-             
-      
-               // User is signed in
-               document.getElementById("userName").textContent = user.displayName;
-                document.getElementById("userDisplay").style.display = "block";
-                document.getElementById("settings").style.display = "block";
-                
-      
-              // User is signed in
-              // Show the login button
-             
-              document.getElementById("signOutButton").style.display = "block";
-              document.getElementById("signupButton").style.display = "none";
-            } else {
-      
-              document.getElementById("settings").style.display = "none"; 
-              // User is not signed in
-              // Show the signup button
-              document.getElementById("signupButton").style.display = "block";
-              document.getElementById("signOutButton").style.display = "none";
-            }
-          });
-        }
-      
-        window.onload = function() {
-          checkAuthState();
-        };
-      
-      
-        // Sign out user
+
+      function checkAuthState() {
+        firebase.auth().onAuthStateChanged(function (user) {
+          if (user) {
+            // User is signed in
+            document.getElementById("userName").textContent = user.displayName;
+            document.getElementById("userDisplay").style.display = "block";
+           
+            // User is signed in
+            // Show the login button
+
+            document.getElementById("signOutButton").style.display = "block";
+            document.getElementById("signupButton").style.display = "none";
+          } else {
+            window.location.href = "signin.html";
+            // User is not signed in
+            // Show the signup button
+            document.getElementById("signupButton").style.display = "block";
+            document.getElementById("signOutButton").style.display = "none";
+          }
+        });
+      }
+
+      window.onload = function () {
+        checkAuthState();
+      };
+
+      // Sign out user
       function signOut() {
-          firebase.auth().signOut()
-            .then(function() {
-              console.log("User signed out successfully");
-              // Redirect the user to the sign-in page or any other desired page
-              window.location.href = "signin.html";
-            })
-            .catch(function(error) {
-              console.error("Error signing out:", error);
-              // Handle any errors that occur during sign out
-            });
-        }
-        
-        // Attach the signOut function to the sign out button or link
-        var signOutButton = document.getElementById("signOutButton");
-        signOutButton.addEventListener("click", signOut);
-      </script>
+        firebase
+          .auth()
+          .signOut()
+          .then(function () {
+            console.log("User signed out successfully");
+            // Redirect the user to the sign-in page or any other desired page
+            window.location.href = "signin.html";
+          })
+          .catch(function (error) {
+            console.error("Error signing out:", error);
+            // Handle any errors that occur during sign out
+          });
+      }
+
+      // Attach the signOut function to the sign out button or link
+      var signOutButton = document.getElementById("signOutButton");
+      signOutButton.addEventListener("click", signOut);
+    </script>
   </body>
 </html>
-
-
-
-
-

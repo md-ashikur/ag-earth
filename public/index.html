@@ -582,7 +582,7 @@
                 <!-- Settings -->
                 <li
                   id="settings"
-                  class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 hidden"
+                  class="px-3 py-2 rounded-sm mb-0.5 last:mb-0 "
                   x-data="{ open: false }"
                 >
                   <a
@@ -1486,7 +1486,7 @@
           // User is signed in
           document.getElementById("userName").textContent = user.displayName;
           document.getElementById("userDisplay").style.display = "block";
-          document.getElementById("settings").style.display = "block";
+         
 
           // User is signed in
           // Show the login button
@@ -1497,7 +1497,7 @@
           document.getElementById("crud-operations").style.display = "block";
           showUserData(user.uid);
         } else {
-          document.getElementById("settings").style.display = "none";
+          
           // User is not signed in
           // Show the signup button
           document.getElementById("signupButton").style.display = "block";

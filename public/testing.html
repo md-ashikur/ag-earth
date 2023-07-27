@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Firebase CRUD with Authentication</title>
+    <style>
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 40%;
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome to the Firestore CRUD App!</h1>
+    <div id="login-form">
+      <h2>Login</h2>
+      <input type="email" id="email" placeholder="Email" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="signIn()">Sign In</button>
+      <button onclick="signUp()">Sign Up</button>
+      <button onclick="signOut()">Sign Out</button>
+    </div>
+
+    <div id="crud-operations" style="display: none">
+      <h2>Add / Edit Data</h2>
+      <input type="text" id="data-input" placeholder="Enter data" />
+      <button onclick="addData()">Add</button>
+      <button onclick="createFolder()">Create Folder</button>
+      <h2>My Folders</h2>
+      <ul id="folder-list"></ul>
+      <h2>My Data</h2>
+      <select id="folder-select" onchange="showUserData(auth.currentUser.uid)">
+        <option value="">All Folders</option>
+      </select>
+      <ul id="data-list"></ul>
+    </div>
+
+    <!-- The Modal -->
+    <div id="moveModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Select Folder to Move Data</h2>
+        <select id="move-folder-select">
+          <option value="">Select a folder</option>
+        </select>
+        <button onclick="moveDataToSelectedFolder()">Move Data</button>
+      </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script>
+      // Replace with your Firebase config
+      var firebaseConfig = {
+        apiKey: "AIzaSyCiYtCABDL7g66NB4mdTH2OS1wOQ99AqkY",
+        authDomain: "agearth-testing.firebaseapp.com",
+        projectId: "agearth-testing",
+        storageBucket: "agearth-testing.appspot.com",
+        messagingSenderId: "1014396222091",
+        appId: "1:1014396222091:web:72356ee8f8cd5c4625728e",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      // Firestore reference
+      var firestore = firebase.firestore();
+
+      // Auth reference
+      var auth = firebase.auth();
+
+      // Auth state observer
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          // User is signed in.
+          document.getElementById("login-form").style.display = "none";
+          document.getElementById("crud-operations").style.display = "block";
+          showUserFolders(user.uid);
+        } else {
+          // No user is signed in.
+          document.getElementById("login-form").style.display = "block";
+          document.getElementById("crud-operations").style.display = "none";
+          showAllUserData();
+        }
+      });
+
+      function signIn() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        auth
+          .signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("Sign-in successful!");
+          })
+          .catch((error) => {
+            console.error("Error signing in:", error);
+          });
+      }
+
+      function signUp() {
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        auth
+          .createUserWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            console.log("Sign-up successful!");
+          })
+          .catch((error) => {
+            console.error("Error signing up:", error);
+          });
+      }
+
+      function signOut() {
+        auth
+          .signOut()
+          .then(() => {
+            console.log("Sign-out successful!");
+          })
+          .catch((error) => {
+            console.error("Error signing out:", error);
+          });
+      }
+
+      function getCurrentDate(timestamp) {
+        const date = timestamp ? timestamp.toDate() : new Date();
+        const options = { year: "numeric", month: "long", day: "numeric" };
+        return date.toLocaleDateString(undefined, options);
+      }
+
+      function addData() {
+        const dataInput = document.getElementById("data-input").value;
+        const folderSelect = document.getElementById("folder-select");
+        const selectedFolder =
+          folderSelect.options[folderSelect.selectedIndex].value;
+        const userId = auth.currentUser.uid;
+
+        if (!selectedFolder) {
+          console.error("Please select a folder to add data.");
+          return;
+        }
+
+        // Create a new document with a unique ID under the selected folder in "user_data" collection
+        firestore
+          .collection("user_data")
+          .doc(selectedFolder)
+          .collection("data")
+          .add({
+            data: dataInput,
+            userId: userId,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+          })
+          .then(() => {
+            console.log("Data added successfully!");
+            window.location.reload(); // Reload the page after adding data
+          })
+          .catch((error) => {
+            console.error("Error adding data:", error);
+          });
+      }
+
+      function createFolder() {
+        const folderName = prompt("Enter folder name:");
+        if (folderName !== null && folderName !== "") {
+          const userId = auth.currentUser.uid;
+          // Create a new document with the folderName as the document ID under "user_folders" collection
+          firestore
+            .collection("user_folders")
+            .doc(folderName)
+            .set({
+              userId: userId,
+            })
+            .then(() => {
+              console.log("Folder created successfully!");
+              window.location.reload(); // Reload the page after creating folder
+            })
+            .catch((error) => {
+              console.error("Error creating folder:", error);
+            });
+        }
+      }
+
+      function deleteFolder(folderName) {
+        if (
+          confirm(
+            `Are you sure you want to delete the folder "${folderName}" and its data?`
+          )
+        ) {
+          firestore
+            .collection("user_folders")
+            .doc(folderName)
+            .delete()
+            .then(() => {
+              console.log("Folder deleted successfully!");
+              window.location.reload(); // Reload the page after deleting folder
+            })
+            .catch((error) => {
+              console.error("Error deleting folder:", error);
+            });
+        }
+      }
+
+      function editData(docId, oldData) {
+        const newData = prompt("Enter new data:", oldData);
+        if (newData !== null) {
+          firestore
+            .collection("user_data")
+            .doc(docId)
+            .update({
+              data: newData,
+            })
+            .then(() => {
+              console.log("Data updated successfully!");
+              window.location.reload(); // Reload the page after editing data
+            })
+            .catch((error) => {
+              console.error("Error updating data:", error);
+            });
+        }
+      }
+
+      function deleteData(docId) {
+        firestore
+          .collection("user_data")
+          .doc(docId)
+          .delete()
+          .then(() => {
+            console.log("Data deleted successfully!");
+            window.location.reload(); // Reload the page after deleting data
+          })
+          .catch((error) => {
+            console.error("Error deleting data:", error);
+          });
+      }
+
+      function moveData(docId) {
+        const folderSelect = document.getElementById("folder-select");
+        const moveFolderSelect = document.getElementById("move-folder-select");
+
+        // Clear any previous options
+        moveFolderSelect.innerHTML =
+          '<option value="">Select a folder</option>';
+
+        // Get all user folders
+        firestore
+          .collection("user_folders")
+          .where("userId", "==", auth.currentUser.uid)
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((folder) => {
+              const folderName = folder.id;
+              const folderOption = document.createElement("option");
+              folderOption.value = folderName;
+              folderOption.innerText = folderName;
+              moveFolderSelect.appendChild(folderOption);
+            });
+
+            // Show the move modal
+            const modal = document.getElementById("moveModal");
+            modal.style.display = "block";
+            modal.dataset.docId = docId; // Store the selected document ID in the modal
+          })
+          .catch((error) => {
+            console.error("Error getting folders:", error);
+          });
+      }
+
+      function moveDataToSelectedFolder() {
+        const modal = document.getElementById("moveModal");
+        const moveFolderSelect = document.getElementById("move-folder-select");
+        const selectedFolder =
+          moveFolderSelect.options[moveFolderSelect.selectedIndex].value;
+        const docId = modal.dataset.docId;
+
+        if (!selectedFolder) {
+          console.error("Please select a folder to move data.");
+          return;
+        }
+
+        // Get the data from the current folder
+        firestore
+          .collection("user_data")
+          .doc(docId)
+          .get()
+          .then((doc) => {
+            const data = doc.data().data;
+            const userId = doc.data().userId;
+
+            // Add data to the selected folder
+            firestore
+              .collection("user_data")
+              .doc(selectedFolder)
+              .collection("data")
+              .add({
+                data: data,
+                userId: userId,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+              })
+              .then(() => {
+                // Now delete the data from the current folder
+                firestore
+                  .collection("user_data")
+                  .doc(docId)
+                  .delete()
+                  .then(() => {
+                    console.log("Data moved successfully!");
+                    closeModal();
+                  })
+                  .catch((error) => {
+                    console.error("Error deleting data:", error);
+                  });
+              })
+              .catch((error) => {
+                console.error("Error moving data:", error);
+              });
+          })
+          .catch((error) => {
+            console.error("Error getting data:", error);
+          });
+      }
+
+      function closeModal() {
+        const modal = document.getElementById("moveModal");
+        modal.style.display = "none";
+
+        // Clear the selected document ID
+        modal.dataset.docId = "";
+      }
+
+      // Close the modal if the user clicks outside of it
+      window.onclick = function (event) {
+        const modal = document.getElementById("moveModal");
+        if (event.target === modal) {
+          closeModal();
+        }
+      };
+
+      function showUserData(userId, folderName = "") {
+        const dataList = document.getElementById("data-list");
+        dataList.innerHTML = ""; // Clear the list before re-populating it
+
+        // Show data from the selected folder
+        let dataCollectionRef = firestore
+          .collection("user_data")
+          .where("userId", "==", userId);
+        if (folderName) {
+          dataCollectionRef = dataCollectionRef.where(
+            "folder",
+            "==",
+            folderName
+          );
+        }
+        dataCollectionRef
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+              const data = doc.data().data;
+              const docId = doc.id;
+              const timestamp = doc.data().timestamp;
+              const formattedDate = getCurrentDate(timestamp);
+              const dataListItem = document.createElement("li");
+              dataListItem.innerHTML = `${data} - ${formattedDate} <button onclick="editData('${docId}', '${data}')">Edit</button> <button onclick="deleteData('${docId}')">Delete</button> <button onclick="moveData('${docId}')">Move</button>`;
+              dataList.appendChild(dataListItem);
+            });
+          })
+          .catch((error) => {
+            console.error("Error getting data:", error);
+          });
+      }
+
+      function showUserFolders(userId) {
+        const folderList = document.getElementById("folder-list");
+        folderList.innerHTML = ""; // Clear the list before re-populating it
+
+        // Get all user folders
+        firestore
+          .collection("user_folders")
+          .where("userId", "==", userId)
+          .get()
+          .then((querySnapshot) => {
+            querySnapshot.forEach((folder) => {
+              const folderName = folder.id;
+              const folderListItem = document.createElement("li");
+              folderListItem.innerHTML = `${folderName} <button onclick="deleteFolder('${folderName}')">Delete</button>`;
+              folderList.appendChild(folderListItem);
+            });
+
+            // Call showUserData after updating folder-select
+            const folderSelect = document.getElementById("folder-select");
+            folderSelect.innerHTML = '<option value="">All Folders</option>';
+            querySnapshot.forEach((folder) => {
+              const folderName = folder.id;
+              const folderOption = document.createElement("option");
+              folderOption.value = folderName;
+              folderOption.innerText = folderName;
+              folderSelect.appendChild(folderOption);
+            });
+
+            const selectedFolder =
+              folderSelect.options[folderSelect.selectedIndex].value;
+            showUserData(userId, selectedFolder); // Move this call here
+          })
+          .catch((error) => {
+            console.error("Error getting folders:", error);
+          });
+      }
+
+      function showAllUserData() {
+        firestore
+          .collection("user_data")
+          .get()
+          .then((querySnapshot) => {
+            const dataList = document.getElementById("data-list");
+            dataList.innerHTML = ""; // Clear the list before re-populating it
+
+            querySnapshot.forEach((doc) => {
+              const data = doc.data().data;
+              const dataListItem = document.createElement("li");
+              dataListItem.innerHTML = `${data} <span style="font-style: italic;">(Not signed in)</span>`;
+              dataList.appendChild(dataListItem);
+            });
+          })
+          .catch((error) => {
+            console.error("Error getting data:", error);
+          });
+      }
+    </script>
+  </body>
+</html>

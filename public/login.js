@@ -1,12 +1,12 @@
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "AIzaSyCiYtCABDL7g66NB4mdTH2OS1wOQ99AqkY",
-    authDomain: "agearth-testing.firebaseapp.com",
-    projectId: "agearth-testing",
-    storageBucket: "agearth-testing.appspot.com",
-    messagingSenderId: "1014396222091",
-    appId: "1:1014396222091:web:72356ee8f8cd5c4625728e"
-  };
+  apiKey: "AIzaSyCiYtCABDL7g66NB4mdTH2OS1wOQ99AqkY",
+  authDomain: "agearth-testing.firebaseapp.com",
+  projectId: "agearth-testing",
+  storageBucket: "agearth-testing.appspot.com",
+  messagingSenderId: "1014396222091",
+  appId: "1:1014396222091:web:72356ee8f8cd5c4625728e",
+};
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
@@ -23,13 +23,15 @@ function login(event) {
   var email = emailInput.value;
   var password = passwordInput.value;
 
-  firebase.auth().signInWithEmailAndPassword(email, password)
-    .then(function(userCredential) {
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(email, password)
+    .then(function (userCredential) {
       console.log("User logged in successfully:", userCredential.user);
       // Redirect the user to another page after successful login
       window.location.href = "index.html";
     })
-    .catch(function(error) {
+    .catch(function (error) {
       console.error("Error logging in:", error);
       // Show error message
       errorContainer.innerText = error.message;
@@ -38,5 +40,3 @@ function login(event) {
 
 // Attach the login function to the form submission event
 loginForm.addEventListener("submit", login);
-
-
